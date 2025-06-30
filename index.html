@@ -2,20 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D Models with Audio</title>
+    <title>DJ Together - Mixed Reality</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <a-scene>
+    <a-scene
+      embedded
+      vr-mode-ui="enabled: false"
+      renderer="colorManagement: true; physicallyCorrectLights: true; xrCompatible: true;"
+      xrweb="allowedModes: ar; optionalFeatures: dom-overlay;"
+    >
       <a-assets>
-        <img
-          id="skyTexture"
-          src="https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/AdobeStock_1038456312.jpeg?v=1750797579902"
-        />
+        <!-- Du brauchst keine SkyTexture mehr! -->
         <a-asset-item
           id="mic"
           src="https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/vintage_microphone.glb?v=1750781974892"
@@ -34,6 +34,7 @@
         ></a-asset-item>
       </a-assets>
 
+      <!-- Dein Schriftzug -->
       <a-gltf-model
         id="djtogether"
         src="#text"
@@ -41,9 +42,9 @@
         scale="0.3 0.3 0.3"
         rotation="0 0 0"
         animation__float="property: object3D.position.y; to: 1.75; dir: alternate; dur: 5000; loop: true"
-        class="interactive"
       ></a-gltf-model>
 
+      <!-- Mic -->
       <a-gltf-model
         id="micModel"
         src="#mic"
@@ -51,19 +52,20 @@
         scale="0.3 0.3 0.3"
         rotation="0 10 10"
         animation__float="property: object3D.position.y; to: 1; dir: alternate; dur: 5000; loop: true"
-        class="interactive"
+        class="clickable"
       ></a-gltf-model>
 
+      <!-- Drums -->
       <a-gltf-model
         id="drumsModel"
         src="#drums"
-        position="-2.300 1.1 -0.300"
+        position="-2.3 1.1 -0.3"
         scale="0.9 0.9 0.9"
         rotation="0 60 0"
         animation__float="property: object3D.position.y; to: 1.2; dir: alternate; dur: 5000; loop: true"
-        class="interactive"
       ></a-gltf-model>
 
+      <!-- Guitar -->
       <a-gltf-model
         id="guitarModel"
         src="#guitar"
@@ -71,32 +73,18 @@
         scale="0.1 0.1 0.1"
         rotation="0 180 60"
         animation__float="property: object3D.position.y; to: 1.55; dir: alternate; dur: 5000; loop: true"
-        class="interactive"
       ></a-gltf-model>
 
-      <a-entity
-        light="color: #DA33FF; intensity: 1.5"
-        position="-1 1 0"
-      ></a-entity>
-      <a-entity
-        light="color: #33CAFF; intensity: 1.5"
-        position="1 1 0"
-      ></a-entity>
-      <a-entity
-        id="light"
-        position="1.3 1.6 0.3"
-        light="angle: 17.71; decay: 1.56; type: spot"
-        animation="property: position; to: -1.3 1.6 0.3; dur: 4000; loop: true; dir: alternate"
-      >
-      </a-entity>
-
+      <!-- Licht -->
+      <a-entity light="color: #DA33FF; intensity: 1.5" position="-1 1 0"></a-entity>
+      <a-entity light="color: #33CAFF; intensity: 1.5" position="1 1 0"></a-entity>
       <a-light type="ambient" color="#FFF"></a-light>
+
+      <!-- Kamera -->
       <a-camera
         position="0 1.6 0"
         cursor="fuse: false; rayOrigin: mouse"
       ></a-camera>
-
-      <a-sky src="#skyTexture" rotation="0 90 0"></a-sky>
     </a-scene>
 
     <script src="script.js"></script>
