@@ -4,16 +4,22 @@
     <meta charset="UTF-8" />
     <title>DJ Together - Mixed Reality</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
   </head>
 
   <body>
-    <a-scene
-      embedded
-      vr-mode-ui="enabled: false"
-      renderer="colorManagement: true; physicallyCorrectLights: true; xrCompatible: true;"
-      xrweb="allowedModes: ar; optionalFeatures: dom-overlay;"
-    >
+  <a-scene embedded arjs>
+        <a-marker preset="hiro">
+            <!-- we use cors proxy to avoid cross-origin problems ATTENTION! you need to set up your server -->
+            <a-entity
+            position="0 0 0"
+            scale="0.05 0.05 0.05"
+            gltf-model=#text
+            ></a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+    
       <a-assets>
         <a-asset-item
           id="mic"
