@@ -1,98 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>DJ Together - Mixed Reality</title>
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="script.js"></script>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>DJ Together - Mixed Reality</title>
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+</head>
+
+<body style="margin: 0; overflow: hidden">
+  <button id="toggleSkyBtn" style="position: absolute; top: 10px; left: 10px; z-index: 999">
+    Sky Ein/Aus
+  </button>
+  <a-scene embeddedAdd vr-mode-ui="enabled: false" renderer="colorManagement: true;" xr-mode="immersive-ar"
+    raycaster="objects: .interactive" cursor="rayOrigin: mouse"
+    xr-session-init="{ 'optionalFeatures': ['dom-overlay'], 'domOverlay': { 'root': document.body } }">
 
 
-  </head>
+    <a-sky id="mysky" src="#mySkyTexture" rotation="0 90 0" visible="false"></a-sky>
 
-  <body>
-  <a-scene embedded arjs>
-        <a-marker preset="hiro">
-            <!-- we use cors proxy to avoid cross-origin problems ATTENTION! you need to set up your server -->
-            <a-entity
-            position="0 0 0"
-            scale="0.05 0.05 0.05"
-            gltf-model=#text
-            ></a-entity>
-        </a-marker>
-        <a-entity camera></a-entity>
-    
-      <a-assets>
-        <a-asset-item
-          id="mic"
-          src="https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/vintage_microphone.glb?v=1750781974892"
-        ></a-asset-item>
-        <a-asset-item
-          id="guitar"
-          src="https://cdn.glitch.global/dac312c4-5145-47d4-8a18-3684e2763a69/generic_electronic_guitar.glb?v=1750723479382"
-        ></a-asset-item>
-        <a-asset-item
-          id="drums"
-          src="https://cdn.glitch.global/dac312c4-5145-47d4-8a18-3684e2763a69/drums.glb?v=1750725752915"
-        ></a-asset-item>
-        <a-asset-item
-          id="text"
-          src="https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/untitled.glb?v=1750867542167"
-        ></a-asset-item>
-      </a-assets>
+    <a-assets>
+        <img id="mySkyTexture"
+          src="https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/AdobeStock_1038456312.jpeg?v=1750797579902" />
+      <a-asset-item id="text"
+        src="https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/untitled.glb?v=1750867542167"></a-asset-item>
+      <a-asset-item id="mic"
+        src="https://cdn.glitch.global/df72b162-7584-480e-b6d2-487faec09dca/mic.glb?v=1751332127959"></a-asset-item>
+      <a-asset-item id="guitar"
+        src="https://cdn.glitch.global/dac312c4-5145-47d4-8a18-3684e2763a69/generic_electronic_guitar.glb?v=1750723479382"></a-asset-item>
+      <a-asset-item id="drums"
+        src="https://cdn.glitch.global/dac312c4-5145-47d4-8a18-3684e2763a69/drums.glb?v=1750725752915"></a-asset-item>
+    </a-assets>
 
-      <!-- Dein Schriftzug -->
-      <a-gltf-model
-        id="djtogether"
-        src="#text"
-        position="0 1.65 -1"
-        scale="0.3 0.3 0.3"
-        rotation="0 0 0"
-        animation__float="property: object3D.position.y; to: 1.75; dir: alternate; dur: 5000; loop: true"
-      ></a-gltf-model>
+    <a-gltf-model id="question" src="#questionmark" position="0 1 -3" scale="0.3 0.3 0.3" class="interactive"
+      gltf-model="https://cdn.glitch.global/df72b162-7584-480e-b6d2-487faec09dca/question.glb?v=1751313028627"></a-gltf-model>
+    <a-entity
+      text="align: center; color: #000000; height: 0.41; letterSpacing: -4.24; value: Control the Instruments with a single tap!; width: 0.82"
+      scale="2 2 2" position="0 0.88 -3"></a-entity>
+    <a-gltf-model id="djtogether" src="#text" position="0 1.65 -3" scale="0.3 0.3 0.3" rotation="0 0 0"
+      animation__float="property: object3D.position.y; to: 1.75; dir: alternate; dur: 5000; loop: true"></a-gltf-model>
 
-      <!-- Mic -->
-      <a-gltf-model
-        id="micModel"
-        src="#mic"
-        position="2 0.9 0"
-        scale="0.3 0.3 0.3"
-        rotation="0 10 10"
-        animation__float="property: object3D.position.y; to: 1; dir: alternate; dur: 5000; loop: true"
-        class="clickable"
-      ></a-gltf-model>
+      <a-entity id="micWrapper" position="1.599 1.215 -2.856" rotation="0 10 10">
+        <a-box class="interactive"
+               data-name="mic"
+               width="0.4" height="1.85" depth="0.66"
+               position="0 0 0"
+               visible="false">                  
+        </a-box>
+        <a-gltf-model id="micModel"
+                      src="#mic"
+                      scale="0.2 0.2 0.2">
+        </a-gltf-model>
+      </a-entity>
 
-      <!-- Drums -->
-      <a-gltf-model
-        id="drumsModel"
-        src="#drums"
-        position="-2.95 1.1 -1.85"
-        scale="0.9 0.9 0.9"
-        rotation="0 33 0"
-        animation__float="property: object3D.position.y; to: 1.2; dir: alternate; dur: 5000; loop: true"
-      ></a-gltf-model>
+      <a-entity id="guitarWrapper" position="1.951 1.5 -2.158" rotation="-20 -58 20">
+        <a-box class="interactive" data-name="guitar"
+               width="0.3" height="1.670" depth="0.330"
+               visible="true"></a-box>
+        <a-gltf-model id="guitarModel" src="#guitar" scale="0.1 0.1 0.1"></a-gltf-model>
+      </a-entity>
 
-      <!-- Guitar -->
-      <a-gltf-model
-        id="guitarModel"
-        src="#guitar"
-        position="-2.6 1.5 0.12"
-        scale="0.1 0.1 0.1"
-        rotation="0 80 60"
-        animation__float="property: object3D.position.y; to: 1.55; dir: alternate; dur: 5000; loop: true"
-      ></a-gltf-model>
+      <a-entity id="drumsWrapper" position="-2.210 1.193 -3.337" rotation="0 20 0">
+        <a-box class="interactive" visible= false data-name="drums" width="1.3" height="1.3" depth="1.3" geometry="primitive: sphere; radius: 1.16" position="0.08555 0 0.69548"></a-box>
+        <a-gltf-model id="drumsModel" src="#drums" scale="0.9 0.9 0.9"></a-gltf-model>
+      </a-entity>
 
-      <!-- Licht -->
-      <a-entity light="color: #DA33FF; intensity: 1.5" position="-1 1 0"></a-entity>
-      <a-entity light="color: #33CAFF; intensity: 1.5" position="1 1 0"></a-entity>
-      <a-light type="ambient" color="#FFF"></a-light>
+    <a-entity light="color: #DA33FF; intensity: 1.5" position="-1 1 0"></a-entity>
+    <a-entity light="color: #33CAFF; intensity: 1.5" position="1 1 0"></a-entity>
+    <a-entity id="light" position="1.3 1.6 0.3" light="angle: 17.71; decay: 1.56; type: spot"
+      animation="property: position; to: -1.3 1.6 0.3; dur: 4000; loop: true; dir: alternate">
+    </a-entity>
+    <a-light type="ambient" color="#FFF"></a-light>
 
-      <!-- Kamera -->
-      <a-camera
-        position="0 1.6 3"
-        cursor="fuse: false; rayOrigin: mouse"
-      ></a-camera>
-    </a-scene>
+<a-camera raycaster="objects: .interactive; camera=" active: true; near: 0.03; far: 15; spectator: false; fov: 100></a-camera>
+    <script>
 
-  </body>
+document.querySelectorAll('a-gltf-model').forEach(el => {
+  el.addEventListener('model-loaded', () => {
+    // Hole das eigentliche Mesh (kann in children liegen)
+    const mesh = el.getObject3D('mesh') || el.object3D;
+    const box3 = new THREE.Box3().setFromObject(mesh);
+    const helper = new THREE.Box3Helper(box3, 0xff0000);
+    el.object3D.add(helper);
+  });
+});
+
+      // URLs der Audiodateien, die den jeweiligen Instrumenten zugeordnet sind
+      const audioUrls = {
+        mic: "https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/Michael%20Jackson%20Loop-vocals.mp3?v=1750764233292",
+        guitar:
+          "https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/Michael%20Jackson%20Loop-bass.mp3?v=1750764228420",
+        drums:
+          "https://cdn.glitch.global/deaad1b3-c137-49a3-b9f1-f506e217d6d8/Michael%20Jackson%20Loop-drums.mp3?v=1750764225146",
+      };
+      const sky = document.querySelector("#mysky");
+      const button = document.querySelector("#toggleSkyBtn");
+
+      button.addEventListener("click", () => {
+        const isVisible = sky.getAttribute("visible");
+        sky.setAttribute("visible", !isVisible);
+      });
+
+      // Erstelle einen AudioContext, der für die Web Audio API notwendig ist
+      // Unter Safari wird webkitAudioContext benutzt, falls verfügbar
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+
+      // Objekt zum Speichern von Audio-bezogenen Objekten (Buffer, GainNode, etc.) für jedes Instrument
+      const audioObjects = {};
+
+      /**
+       * Lädt und konfiguriert eine Audiodatei für ein bestimmtes Instrument.
+       * @param {string} name - Name des Instruments (z.B. 'mic')
+       * @param {string} modelSelector - CSS-Selector des zugehörigen 3D-Modells in der Szene
+       */
+      async function loadAudio(name, modelSelector) {
+        // Lade die Audiodatei vom Server als ArrayBuffer
+        const response = await fetch(audioUrls[name]);
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Dekodiere den ArrayBuffer zu AudioBuffer, der vom AudioContext abgespielt werden kann
+        const buffer = await audioContext.decodeAudioData(arrayBuffer);
+
+        // Erstelle einen GainNode, um die Lautstärke steuern zu können
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = 0.0; // Anfangs stumm
+
+        // Erstelle einen PannerNode für räumliches Audio (3D-Positionierung)
+        const panner = audioContext.createPanner();
+        panner.panningModel = "HRTF"; // Realistisches 3D-Audio
+        panner.distanceModel = "linear"; // Linearer Lautstärkeabfall mit Entfernung
+        panner.maxDistance = 10; // Maximal hörbare Entfernung
+        panner.rolloffFactor = 1.5; // Stärke des Lautstärkeabfalls
+
+        // Hole die Position des zugehörigen 3D-Modells aus der Szene
+        const model = document.querySelector(modelSelector);
+        const position = model.getAttribute("position");
+
+        // Setze die Position des Panners auf die Position des Modells
+        panner.setPosition(position.x, position.y, position.z);
+
+        // Speichere die wichtigen Objekte im audioObjects-Objekt,
+        // außer der Audioquelle (source), die erst beim Start erstellt wird
+        audioObjects[name] = { buffer, gainNode, model, panner };
+
+        // Verbinde GainNode mit Panner und weiter mit dem AudioContext-Ausgang
+        gainNode.connect(panner).connect(audioContext.destination);
+      }
+
+      /**
+       * Schaltet den Klang eines Instruments ein oder aus (Lautstärke 1 oder 0)
+       * @param {string} name - Name des Instruments
+       */
+      function toggleSound(name) {
+        const obj = audioObjects[name];
+        // Umschalten zwischen laut (1.0) und stumm (0.0)
+        obj.gainNode.gain.value = obj.gainNode.gain.value > 0 ? 0.0 : 1.0;
+      }
+
+      /**
+       * Startet die Wiedergabe aller Audios gleichzeitig.
+       * Nur das angegebene Instrument wird dabei anfangs hörbar gemacht,
+       * die anderen bleiben stumm.
+       * @param {string} nameToUnmute - Name des Instruments, das zu Beginn hörbar sein soll
+       */
+      async function startAllSounds(nameToUnmute) {
+        // Falls der AudioContext pausiert ist, reaktiviere ihn
+        if (audioContext.state === "suspended") await audioContext.resume();
+
+        // Lade alle Audio-Dateien parallel (Promise.all wartet auf alle)
+        await Promise.all([
+          loadAudio("mic", "#micModel"),
+          loadAudio("guitar", "#guitarModel"),
+          loadAudio("drums", "#drumsModel"),
+        ]);
+
+        // Definiere eine gemeinsame Startzeit etwas in der Zukunft (0.5 Sekunden)
+        const startTime = audioContext.currentTime + 0.1;
+
+        // Für jedes Instrument ein neues Audio-Source-Objekt erstellen und starten
+        Object.keys(audioObjects).forEach((name) => {
+          const obj = audioObjects[name];
+
+          // Erstelle eine neue BufferSource für die Wiedergabe
+          const source = audioContext.createBufferSource();
+          source.buffer = obj.buffer;
+          source.loop = true; // Schleife aktivieren, damit Sound endlos läuft
+
+          // Verbinde die Quelle mit dem GainNode
+          source.connect(obj.gainNode);
+
+          // Starte die Wiedergabe zur gemeinsamen Startzeit
+          source.start(startTime);
+
+          // Speichere die Quelle im Objekt (um später ggf. stoppen oder neu starten zu können)
+          obj.source = source;
+
+          // Setze die anfängliche Lautstärke:
+          // Nur das ausgewählte Instrument ist hörbar, alle anderen sind stumm
+          obj.gainNode.gain.value = name === nameToUnmute ? 1.0 : 0.0;
+        });
+      }
+      let hasStarted = false;
+      document.querySelectorAll('.interactive').forEach(el => {
+  el.addEventListener('click', async e => {
+    const name = e.target.dataset.name; // z.B. "mic"
+    const wrapper = e.target.parentElement; // das <a-entity> mit Position
+    if (!hasStarted) {
+      hasStarted = true;
+      await startAllSounds(name, wrapper.object3D.position);
+      sendStartAllSounds(wrapper.id);
+    } else {
+      toggleSound(name);
+      sendSoundToggle(wrapper.id);
+    }
+  });
+});
+
+      // Kommunikation mit Web-Rooms
+      // Adresse des Web-Rooms WebSocket-Servers
+      const webRoomsWebSocketServerAddr =
+        "https://nosch.uber.space/web-rooms/";
+      // Variablen
+      let clientId = null; // Client-ID, vom Server beim Betreten des Raumes gesendet
+      let clientCount = 0; // Anzahl der verbundenen Clients im Raum
+
+      const socket = new WebSocket(webRoomsWebSocketServerAddr);
+
+      // Sende Nachricht "start-sound" an alle anderen Clients
+      function sendStartAllSounds(modelId) {
+        sendRequest("*broadcast-message*", ["start-sound", modelId]);
+      }
+      // Sende Nachricht "sound-toggle" an alle anderen Clients
+      function sendSoundToggle(modelId) {
+        sendRequest("*broadcast-message*", ["sound-toggle", modelId]);
+      }
+
+      // Hilfsfunktion zum Senden von Nachrichten über WebSocket an den Server
+      function sendRequest(...message) {
+        const str = JSON.stringify(message);
+        socket.send(str);
+      }
+
+      // Ereignis bei Verbindungsaufbau mit dem Server
+      socket.addEventListener("open", (event) => {
+        sendRequest("*enter-room*", "hello-world");
+        sendRequest("*subscribe-client-count*");
+        sendRequest("*subscribe-client-enter-exit*");
+        // Sende regelmäßig eine leere Nachricht, um Verbindung aufrechtzuerhalten
+        setInterval(() => socket.send(""), 30000);
+      });
+
+      socket.addEventListener("close", (event) => {
+        clientId = null;
+        document.body.classList.add("disconnected");
+      });
+
+      // Nachrichten vom Server empfangen
+      socket.addEventListener("message", (event) => {
+        const data = event.data;
+        if (data.length > 0) {
+          const incoming = JSON.parse(data);
+          const selector = incoming[0];
+
+          // Behandle eingehende Nachrichten
+          switch (selector) {
+            // Antwort auf '*enter-room*'
+            case "*client-id*":
+              clientId = incoming[1];
+              break;
+
+            // Antwort auf '*subscribe-client-count*'
+            case "*client-count*":
+              clientCount = incoming[1];
+              break;
+
+            case "*client-enter*":
+              const enterId = incoming[1];
+              console.log('Client #${enterId} hat den Raum betreten');
+              break;
+            case "*client-exit*":
+              const exitId = incoming[1];
+              console.log('Client #${exitId} hat den Raum verlassen');
+              break;
+
+            case "start-sound": {
+              const modelId = incoming[1];
+              const name = modelId.replace("Model", "");
+              if (!hasStarted) {
+                hasStarted = true;
+                (async () => {
+                  await startAllSounds(name); // Starte Sounds bei anderen Clients
+                })();
+              }
+              break;
+            }
+
+            case "sound-toggle": {
+              const modelId = incoming[1];
+              const name = modelId.replace("Model", "");
+              // Schalte den Sound für das angegebene Modell um
+              toggleSound(name);
+              break;
+            }
+
+            case "*error*": {
+              const message = incoming[1];
+              console.warn("Serverfehler:", ...message);
+              break;
+            }
+
+            default:
+              console.log('Unbekannte eingehende Nachricht: [${incoming}]');
+              break;
+          }
+        }
+      });
+    </script>
+  </a-scene>
+</body>
+
 </html>
